@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles.css" />
+    <script
+      src="https://kit.fontawesome.com/52988f804d.js"
+      crossorigin="anonymous"
+    ></script>
+
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="container">
+      <div class="music-player">
+        <nav>
+          <div class="circle">
+            <i class="fa-solid fa-angle-left"></i>
+          </div>
+          <div class="circle">
+            <i class="fa-solid fa-bars"></i>
+          </div>
+        </nav>
+
+        <img src="img/cover.jpg" alt="cover" class="song-img" />
+        <h1>Perfect</h1>
+        <p>Ed Sheeran</p>
+        <audio id="song">
+          <source src="song.mp3" type="audio/mpeg" />
+        </audio>
+
+        <input type="range" value="0" name="" id="progress" />
+        <div class="controls1">
+          <div><i class="fa-solid fa-backward"></i></div>
+          <div onclick="playPause()" id="play">
+            <i class="fa-solid fa-play" id="ctrlIcon"></i>
+          </div>
+          <div><i class="fa-solid fa-forward"></i></div>
+        </div>
+        <div class="controls">
+          <div id="cross">
+            <i
+              class="fa-solid fa-xmark fa-shake fa-2xl"
+              style="color: #330b7f"
+            ></i>
+          </div>
+          <div id="heart" onclick="playNextSong()">
+            <i
+              class="fa-solid fa-heart fa-flip fa-2xl"
+              style="color: #ff0000"
+            ></i>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      let progress = document.getElementById("progress");
+      let song = document.getElementById("song");
+      let ctrlIcon = document.getElementById("ctrlIcon");
+      let songImg = document.querySelector(".song-img");
+
+      song.onloadedmetadata = function () {
+        progress.max = song.duration;
+        progress.value = song.currentTime;
+      };
+
+      function playPause() {
+        if (ctrlIcon.classList.contains("fa-pause")) {
+          song.pause();
+          ctrlIcon.classList.remove("fa-pause");
+          ctrlIcon.classList.add("fa-play");
+        } else {
+          song.play();
+          ctrlIcon.classList.add("fa-pause");
+          ctrlIcon.classList.remove("fa-play");
+        }
+      }
+
+      function playNextSong() {
+        // Pause the current song
+        song.pause();
+
+        // Hide the current song image with a transition
+        songImg.classList.add("hide-img");
+
+        // Update the source of the audio element to the new song
+        song.src = "song2.mp3";
+
+        // Load and play the new song
+        song.load();
+        song.play();
+
+        // Update the song title and artist with transitions
+        let songTitle = document.querySelector(".music-player h1");
+        let songArtist = document.querySelector(".music-player p");
+
+        // Change the text with a fade-out effect
+        songTitle.style.opacity = 0;
+        songArtist.style.opacity = 0;
+
+        setTimeout(function () {
+          songTitle.innerText = "Happier"; // Change the song title
+          songArtist.innerText = "Marshmello"; // Change the song artist
+
+          // Fade-in the updated text
+          songTitle.style.opacity = 1;
+          songArtist.style.opacity = 1;
+        }, 500); // Change the text after 500ms (matching the heart button transition duration)
+
+        // Reset the song image to show the new cover with a transition
+        setTimeout(function () {
+          songImg.src = "img/cover2.jpg"; // Set the path to your new song image
+          songImg.classList.remove("hide-img");
+        }, 500); // Reset the image after 500ms (matching the heart button transition duration)
+
+        // Update the play/pause button icon to pause
+        ctrlIcon.classList.remove("fa-play");
+        ctrlIcon.classList.add("fa-pause");
+
+        // Animate the heart button to move to the right
+        let heartButton = document.getElementById("heart");
+        heartButton.style.marginLeft = "20em"; // Adjust the margin-left value as needed
+
+        // Reset the margin-left after the transition is complete
+        setTimeout(function () {
+          heartButton.style.marginLeft = "11em"; // Reset margin-left to its original value
+        }, 500); // Reset the margin-left after 500ms (matching the heart button transition duration)
+      }
+    </script>
+  </body>
+</html>
