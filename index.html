@@ -64,6 +64,13 @@
         progress.max = song.duration;
         progress.value = song.currentTime;
       };
+      function updateProgressBar() {
+        progress.value = song.currentTime;
+        requestAnimationFrame(updateProgressBar);
+      }
+
+      // Call the updateProgressBar function to continuously update the progress bar
+      updateProgressBar();
 
       function playPause() {
         if (ctrlIcon.classList.contains("fa-pause")) {
@@ -127,6 +134,11 @@
           heartButton.style.marginLeft = "11em"; // Reset margin-left to its original value
         }, 500); // Reset the margin-left after 500ms (matching the heart button transition duration)
       }
+
+      // Add an event listener to the progress bar to seek to a specific time
+      progress.addEventListener("input", function () {
+        song.currentTime = progress.value;
+      });
     </script>
   </body>
 </html>
